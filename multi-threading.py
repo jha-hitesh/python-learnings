@@ -1,7 +1,6 @@
 import random
 from threading import Thread
 import time
-import traceback
 
 
 class SafeThread(Thread):
@@ -90,6 +89,12 @@ def step6_process(*args, **kwargs):
 	print("step6_process completed")
 
 
+def step7_process(*args, **kwargs):
+	"""step7_process."""
+	print("step7_process completed")
+	return True, {}
+
+
 def main_api_handler(*args, **kwargs):
 	"""main_api_handler.
 	
@@ -121,6 +126,10 @@ def main_api_handler(*args, **kwargs):
 		process6.start()
 		process5.join()
 		process6.join()
-		return {"success": True, "message": "Api call was completed succesfully"}
+		success, data = step7_process(*args, **kwargs)
+		return {
+			"success": success,
+			"data": data
+		}
 	except Exception as e:
 		return {"success": False, "message": str(e)}
